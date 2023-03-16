@@ -9,6 +9,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+import (
+	"DiscordBot/cmds"
+)
+
 // Bot Parameters
 var (
 	Token     string
@@ -82,11 +86,16 @@ func Start() {
 }
 
 func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+	channel, err := s.State.Channel(m.ChannelID)
+	if err != nil {
+		fmt.Println("Error getting chnnel,", err)
+	}
+
 	if m.Author.ID == BotId {
 		return
 	}
 	if m.Content == BotPrefix+"ping" {
-		_, _ = s.ChannelMessageSend(m.ChannelID, "pong")
+		cmds.Pong(s, channel)
 	}
 	if m.Content == BotPrefix+"greet" {
 		mesg := fmt.Sprintf("Hello, how are you %s?", m.Author.Username)
@@ -110,6 +119,7 @@ func main() {
 
 	Start()
 
+	fmt.Println("Press Ctrl + C to close bot.")
 	<-make(chan struct{})
 	return
 }
