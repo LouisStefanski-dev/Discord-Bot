@@ -98,15 +98,10 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		cmds.Pong(s, channel)
 	}
 	if m.Content == BotPrefix+"greet" {
-		mesg := fmt.Sprintf("Hello, how are you %s?", m.Author.Username)
-		_, _ = s.ChannelMessageSend(m.ChannelID, mesg)
-	}
-	if m.Content == BotPrefix+"sexyPeter" {
-		mesg := fmt.Sprintf("I'm Peter Griffin, from Family Guy. That's me. Hey, %s, you're sexy", m.Author.Username)
-		_, _ = s.ChannelMessageSend(m.ChannelID, mesg)
+		cmds.Greet(s, m)
 	}
 	if strings.Contains(strings.ToLower(m.Content), "furries") {
-		_, _ = s.ChannelMessageSend(m.ChannelID, "Please don't mention those in here.")
+		cmds.Disapprove(s, channel);
 	}
 }
 
